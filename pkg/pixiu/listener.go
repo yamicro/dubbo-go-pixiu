@@ -63,6 +63,7 @@ func (l *ListenerService) Start() {
 	}
 }
 
+// pi listen port : 8888
 func (l *ListenerService) httpListener() {
 	hl := NewDefaultHttpListener()
 	hl.pool.New = func() interface{} {
@@ -78,7 +79,7 @@ func (l *ListenerService) httpListener() {
 	}
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", hl.ServeHTTP)
+	mux.HandleFunc("/", hl.ServeHTTP) // pi route| request root
 
 	srv := http.Server{
 		Addr:           resolveAddress(l.Address.SocketAddress.Address + ":" + strconv.Itoa(l.Address.SocketAddress.Port)),
@@ -134,7 +135,7 @@ func (s *DefaultHttpListener) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 	hc.ResetWritermen(w)
 	hc.Reset()
 
-	api, err := s.routeRequest(hc, r)
+	api, err := s.routeRequest(hc, r) // pi route| route request
 	if err != nil {
 		s.pool.Put(hc)
 		return
@@ -182,8 +183,9 @@ func httpFilter(ctx *h.HttpContext, request fc.IntegrationRequest) {
 	}
 }
 
+// pi route| route request
 func (s *DefaultHttpListener) routeRequest(ctx *h.HttpContext, req *http.Request) (router.API, error) {
-	apiDiscSrv := extension.GetMustAPIDiscoveryService(constant.LocalMemoryApiDiscoveryService)
+	apiDiscSrv := extension.GetMustAPIDiscoveryService(constant.LocalMemoryApiDiscoveryService) // pi get service by local discovery
 	api, err := apiDiscSrv.GetAPI(req.URL.Path, fc.HTTPVerb(req.Method))
 	if err != nil {
 		ctx.WriteWithStatus(http.StatusNotFound, constant.Default404Body)

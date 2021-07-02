@@ -142,7 +142,7 @@ func (rt *Route) DeleteAPI(fullPath string, httpverb config.HTTPVerb) bool {
 	}
 	return false
 }
-
+// pi router| 根据网关传入的 uri 查询符合的节点信息
 func (rt *Route) findNode(fullPath string) (*Node, bool) {
 	lowerPath := strings.ToLower(fullPath)
 	var n interface{}

@@ -21,6 +21,7 @@ import (
 	"github.com/apache/dubbo-go-pixiu/pkg/service"
 )
 
+// pi start| Api Services Store by Discovery by Local
 var apiDiscoveryServiceMap = map[string]service.APIDiscoveryService{}
 
 // SetAPIDiscoveryService will store the @filter and @name

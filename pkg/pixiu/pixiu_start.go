@@ -42,11 +42,13 @@ type PX struct {
 
 // Start pixiu start
 func (p *PX) Start() {
+	// pi start| 获取系统配置（引导类）
 	conf := config.GetBootstrap()
 
 	p.startWG.Add(1)
 
 	defer func() {
+		// 异常处理，暂时只打印日志, recover() 捕获 Pixiu 启动过程中的 panic，
 		if re := recover(); re != nil {
 			logger.Error(re)
 			// TODO stop
@@ -74,9 +76,11 @@ func (p *PX) Start() {
 		logger.Infof("[dubbopixiu go pprof] httpListener start by : %s", addr.Address+":"+strconv.Itoa(addr.Port))
 	}
 }
-
+// pi
 func (p *PX) beforeStart() {
+	// pi start| Dubbo client init，初始化 Dubbogo Consumer
 	dubbo.SingletonDubboClient().Init()
+
 	initialize.Run(config.GetAPIConf())
 	if err := api.InitAPIsFromConfig(config.GetAPIConf()); err != nil {
 		logger.Errorf("InitAPIsFromConfig fail: %v", err)
@@ -93,8 +97,14 @@ func NewPX() *PX {
 func Start(bs *model.Bootstrap) {
 	logger.Infof("[dubbopixiu go] start by config : %+v", bs)
 
+	// WaitGroup 等待一组 goroutine 完成。
+	//main goroutine 调用Add来设置要等待的 goroutine 的数量。
+	//然后每个 goroutine 运行并在完成时调用Done 。
+	//同时， Wait可用于阻塞，直到所有 goroutine 完成。 首次使用后不得复制 WaitGroup。
+	// pi start| 创建 Pixiu，控制 pixiu 生命周期
 	proxy := NewPX()
+	// pi start| 1. 执行 pixiu 启动事件，加载
 	proxy.Start()
-
+	// pi WaitGroup 等待一组 goroutine 完成。 main goroutine 调用Add来设置要等待的 goroutine 的数量。 然后每个 goroutine 运行并在完成时调用Done 。 同时， Wait可用于阻塞，直到所有 goroutine 完成。 首次使用后不得复制 WaitGroup。
 	proxy.startWG.Wait()
 }

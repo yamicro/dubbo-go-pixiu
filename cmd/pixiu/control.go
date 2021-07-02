@@ -78,15 +78,21 @@ var (
 			},
 		},
 		Action: func(c *cli.Context) error {
+
+			//
 			configPath := c.String("config")
 			apiConfigPath := c.String("api-config")
 			flagLogLevel := c.String("log-level")
 			logConfPath := c.String("log-config")
 
+			// pi start| load system config
 			bootstrap := config.Load(configPath)
+
+			// pi start| set log level if non-null
 			if logLevel, ok := flagToLogLevel[flagLogLevel]; ok {
 				logger.SetLoggerLevel(logLevel)
 			}
+			// pi start| set log path
 			logger.InitLog(logConfPath)
 
 			initFromRemote := false
@@ -112,6 +118,7 @@ var (
 				runtime.GOMAXPROCS(limitCpus)
 			}
 
+			// pi start Pixiu server
 			pixiu.Start(bootstrap)
 			return nil
 		},

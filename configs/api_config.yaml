@@ -19,6 +19,32 @@
 name: pixiu
 description: pixiu sample
 resources:
+  ## Test Pass: http://localhost:8888/api/v1/test-http/user?name=tc
+  - path: '/api/v1/test-http/user'
+    type: restful
+    description: user
+    methods:
+      - httpVerb: GET
+        onAir: true
+        timeout: 1000ms
+        inboundRequest:
+          requestType: http
+          queryStrings:
+            - name: name
+              required: true
+        integrationRequest:
+          requestType: http
+          host: "127.0.0.1:1314"
+          path: "/user"
+      - httpVerb: POST
+        onAir: true
+        timeout: 10s
+        inboundRequest:
+          requestType: http
+        integrationRequest:
+          requestType: http
+          host: "127.0.0.1:1314"
+          path: "/user/"
   - path: '/api/v1/test-dubbo/user'
     type: restful
     description: user
@@ -26,7 +52,7 @@ resources:
     plugins:
       pre:
         pluginNames:
-          - rate limit
+          - ratelimit
           - access
       post:
         groupNames:
@@ -103,7 +129,6 @@ rateLimit:
           pattern: "/api/v1/http/foo/*"
         - matchStrategy: 1
           pattern: "/api/v1/http/bar/*"
-
   rules:
     #qps sample At most 100 requests can be passed in 1000ms, so qps is 100
     - resource: "test-dubbo"
@@ -111,3 +136,4 @@ rateLimit:
       flowRule:
         threshold: 100
         statintervalinms: 1000
+  logPath: ./logs

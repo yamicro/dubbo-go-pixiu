@@ -37,21 +37,24 @@ import (
 
 // Run start init.
 func Run(config config.APIConfig) {
+
+	// pi start| 1. filter init
 	filterInit(&config)
+	// pi start| 2. api discovery service init
 	apiDiscoveryServiceInit()
 }
 
 func filterInit(config *config.APIConfig) {
-	accesslog.Init()
-	api.Init()
-	authority.Init()
-	logger.Init()
-	recovery.Init()
-	remote.Init()
-	response.Init()
-	timeout.Init()
-	ratelimit.Init(&config.RateLimit)
-	plugins.Init(config.PluginsGroup, config.PluginFilePath, config.Resources)
+	accesslog.Init() 	// 访问日志组件初始化
+	api.Init()			// api 组件初始化
+	authority.Init()	// 权限组件初始化
+	logger.Init()		// 日志组件初始化
+	recovery.Init()		// 自动恢复组件初始化
+	remote.Init()		// 远程调用组件初始化
+	response.Init()		// 调用响应体处理组件初始化
+	timeout.Init()		// 超时组件初始化
+	ratelimit.Init(&config.RateLimit) // 限流组件初始化
+	plugins.Init(config.PluginsGroup, config.PluginFilePath, config.Resources) // 初始化插件组
 }
 
 func apiDiscoveryServiceInit() {
