@@ -21,6 +21,7 @@ require (
 	github.com/stretchr/testify v1.7.0
 	github.com/tklauser/go-sysconf v0.3.5 // indirect
 	github.com/urfave/cli v1.22.4
+	github.com/wanghongfei/go-eureka-client v1.1.0
 	go.etcd.io/etcd v0.0.0-20200402134248-51bdeb39e698
 	go.opentelemetry.io/otel v1.0.0-RC1
 	go.opentelemetry.io/otel/exporters/prometheus v0.21.0

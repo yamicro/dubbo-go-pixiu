@@ -16,9 +16,34 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+
+# pixiu config: discovery, router...
+pixiu:
+  discovery:
+    locator:
+      enabled: true
+
 name: pixiu
 description: pixiu sample
 resources:
+  - path: '/api/rest/'
+    type: restful
+    methods:
+      - httpVerb: GET
+        onAir: true
+        timeout: 1000ms
+        inboundRequest:
+          requestType: http
+          queryStrings:
+            - name: name
+              required: true
+        integrationRequest:
+          requestType: http
+          host: 127.0.0.1:1314
+          path: /user/
+          mappingParams:
+            - name: queryStrings.name
+              mapTo: queryStrings.name
   - path: '/api/v1/test-dubbo/user'
     type: restful
     description: user
@@ -103,7 +128,7 @@ rateLimit:
           pattern: "/api/v1/http/foo/*"
         - matchStrategy: 1
           pattern: "/api/v1/http/bar/*"
-
+  logPath: ./logs
   rules:
     #qps sample At most 100 requests can be passed in 1000ms, so qps is 100
     - enable: true
