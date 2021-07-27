@@ -3,6 +3,8 @@ package discovery
 //
 type DiscoveryClient interface {
 
+	Client
+
 	Description() string
 
 	GetInstances(serviceId string) []*ServiceInstance

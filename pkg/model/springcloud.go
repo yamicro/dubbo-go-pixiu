@@ -15,24 +15,25 @@
  * limitations under the License.
  */
 
-package constant
+package model
 
-const (
-	HTTPConnectManagerFilter = "dgp.filters.http_connect_manager"
-	HTTPAuthorityFilter      = "dgp.filters.http.authority_filter"
-	HTTPRouterFilter         = "dgp.filters.http.router"
-	HTTPApiFilter            = "dgp.filters.http.api"
-	HTTPDomainFilter         = "dgp.filters.http.domain"
-	RemoteCallFilter         = "dgp.filters.remote_call"
-	TimeoutFilter            = "dgp.filters.timeout"
-	MetricFilter             = "dgp.filters.metric"
-	RecoveryFilter           = "dgp.filters.recovery"
-	ResponseFilter           = "dgp.filters.response"
-	AccessLogFilter          = "dgp.filters.access_log"
-	RateLimitFilter          = "dgp.filters.rate_limit"
-)
+type SpringCloud struct {
 
-const (
-	LocalMemoryApiDiscoveryService = "api.ds.local_memory"
-	SCApiDiscoveryService = "api.ds.spring_cloud"
-)
+	Discovery *DiscoveryLocator		`yaml:"discovery", json:"discovery"`
+
+	Eureka *EurekaClientConfig `yaml:"eureka" json:"eureka"`
+}
+
+type EurekaClientConfig struct {
+	Enable					bool`yaml:"enable"`
+	ConfigFile				string`yaml:"configFile"`
+	RouteFile				string`yaml:"routeFile"`
+	EvictionDuration		uint`yaml:"evictionDuration"`
+	HeartbeatInterval		int`yaml:"heartbeatInterval"`
+}
+
+type DiscoveryLocator struct {
+
+	Enable bool `yaml:"enable" json:"enable"`
+
+}

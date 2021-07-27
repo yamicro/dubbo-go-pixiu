@@ -32,6 +32,7 @@ import (
 	"github.com/apache/dubbo-go-pixiu/pkg/initialize"
 	"github.com/apache/dubbo-go-pixiu/pkg/logger"
 	"github.com/apache/dubbo-go-pixiu/pkg/model"
+	"github.com/apache/dubbo-go-pixiu/pkg/plugin"
 	"github.com/apache/dubbo-go-pixiu/pkg/service/api"
 )
 
@@ -79,10 +80,16 @@ func (p *PX) Start() {
 
 func (p *PX) beforeStart() {
 	dubbo.SingletonDubboClient().Init()
+
+	config.GetBootstrap()
+
+	plugin.BeforeStart()
+
 	initialize.Run(config.GetAPIConf())
 	if err := api.InitAPIsFromConfig(config.GetAPIConf()); err != nil {
 		logger.Errorf("InitAPIsFromConfig fail: %v", err)
 	}
+	
 }
 
 // NewPX create pixiu

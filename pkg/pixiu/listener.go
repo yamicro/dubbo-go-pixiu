@@ -181,7 +181,13 @@ func httpFilter(ctx *h.HttpContext, request fc.IntegrationRequest) {
 }
 
 func (s *DefaultHttpListener) routeRequest(ctx *h.HttpContext, req *http.Request) (router.API, error) {
-	apiDiscSrv := extension.GetMustAPIDiscoveryService(constant.LocalMemoryApiDiscoveryService)
+
+	// origin
+	//apiDiscSrv := extension.GetMustAPIDiscoveryService(constant.LocalMemoryApiDiscoveryService)
+
+	// pi SpringCloud discover service
+	apiDiscSrv := extension.GetMustAPIDiscoveryService(constant.SCApiDiscoveryService)
+
 	api, err := apiDiscSrv.GetAPI(req.URL.Path, fc.HTTPVerb(req.Method))
 	if err != nil {
 		ctx.WriteWithStatus(http.StatusNotFound, constant.Default404Body)

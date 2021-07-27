@@ -33,6 +33,8 @@ func (l *DiscoveryServiceAdapter) GetAPI(url string, httpVerb config.HTTPVerb) (
 		return *api, nil
 	}
 
+	// pi 从 client 中获取服务
+
 	return fr.API{}, errors.New("not found")
 }
 

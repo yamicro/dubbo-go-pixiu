@@ -101,3 +101,12 @@ static_resources:
 metric:
   enable: true
   prometheus_port: 2222
+
+## spring cloud support : discovery
+sc:
+  discovery:
+    enable: true
+  eureka:
+    enable: true
+    configFile: eureka.json
+    routeFile: api_config.yml

@@ -19,6 +19,18 @@ type EurekaClient struct {
 	registryMap 			*SyncMap
 }
 
+func NewEurekaClient(confFile string) (Client, error) {
+	c, err := eureka.NewClientFromFile(confFile)
+	if nil != err {
+		logger.Error("init eureka client fail!")
+		return nil, err
+	}
+
+	euClient := &EurekaClient{client:c}
+
+	return euClient, nil
+}
+
 var gogateApp *eureka.InstanceInfo
 var instanceId = ""
 

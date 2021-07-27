@@ -23,6 +23,9 @@ type Bootstrap struct {
 	DynamicResources DynamicResources `yaml:"dynamic_resources" json:"dynamic_resources" mapstructure:"dynamic_resources"`
 	Tracing          Tracing          `yaml:"tracing" json:"tracing" mapstructure:"tracing"`
 	Metric           Metric           `yaml:"metric" json:"metric" mapstructure:"metric"`
+
+	// pi add spring cloud config
+	SpringCloud		 SpringCloud	  `yaml:"sc" json:"sc" mapstructure:"sc"`
 }
 
 // GetListeners
