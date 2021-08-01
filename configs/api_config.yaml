@@ -26,6 +26,11 @@ pixiu:
 name: pixiu
 description: pixiu sample
 resources:
+  - id: 999
+    path: '/scp' # SPRING-CLOUD-PRODUCT
+    type: restful
+    uri: lb://spring-cloud-producer # todo add new config for decoupling
+
   - path: '/api/rest/'
     type: restful
     methods:

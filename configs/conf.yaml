@@ -108,5 +108,5 @@ sc:
     enable: true
   eureka:
     enable: true
-    configFile: eureka.json
+    configFile: configs/eureka.json
     routeFile: api_config.yml

@@ -1,4 +1,4 @@
-package discovery
+package sc
 
 import (
 	"github.com/apache/dubbo-go-pixiu/pkg/router"

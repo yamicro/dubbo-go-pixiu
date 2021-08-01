@@ -1,4 +1,4 @@
-package discovery
+package sc
 
 import (
 	"errors"
@@ -14,11 +14,14 @@ import (
 type DiscoveryServiceAdapter struct {
 
 	router *router.Route
+
+	lb LoadBalancer
 }
 
 func NewDiscoveryServiceAdapter() *DiscoveryServiceAdapter {
 	return &DiscoveryServiceAdapter{
 		router: router.NewRoute(),
+		lb:     &RoundRobinLoadBalancer{},
 	}
 }
 
@@ -29,11 +32,28 @@ func (l *DiscoveryServiceAdapter) AddAPI(api fr.API) error {
 
 // GetAPI returns the method to the caller
 func (l *DiscoveryServiceAdapter) GetAPI(url string, httpVerb config.HTTPVerb) (fr.API, error) {
-	if api, ok := l.router.FindAPI(url, httpVerb); ok {
-		return *api, nil
-	}
-
 	// pi 从 client 中获取服务
+
+	//instances, err := l.client.GetInstances("SPRING-CLOUD-PRODUCER")
+	instances := client.Get("SPRING-CLOUD-PRODUCER")
+
+	// lb
+	//lb := &RoundRobinLoadBalancer{}
+	instanceInfo := l.lb.Choose(instances)
+
+	if instanceInfo != nil {
+		method := config.Method{
+			OnAir: true,
+		}
+		method.IntegrationRequest.Host = instanceInfo.Addr
+		method.IntegrationRequest.RequestType = config.HTTPRequest
+		method.IntegrationRequest.Path = url
+		return fr.API{
+			URLPattern: instanceInfo.ServiceName,
+			Method:   method,
+			Headers:    map[string]string{},
+		}, nil
+	}
 
 	return fr.API{}, errors.New("not found")
 }

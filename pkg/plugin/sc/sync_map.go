@@ -1,4 +1,4 @@
-package discovery
+package sc
 
 import "sync"
 
@@ -12,13 +12,13 @@ func NewSyncMap() *SyncMap {
 	}
 }
 
-func (sm *SyncMap) Get(key string) ([]*ServiceInstance, bool) {
+func (sm *SyncMap) Get(key string) ([]*InstanceInfo, bool) {
 	val, exist := sm.smap.Load(key)
 	if !exist {
 		return nil, false
 	}
 
-	info, ok := val.([]*ServiceInstance)
+	info, ok := val.([]*InstanceInfo)
 	if !ok {
 		return nil, false
 	}

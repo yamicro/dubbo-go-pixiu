@@ -3,11 +3,10 @@ package sc
 import (
 	"github.com/apache/dubbo-go-pixiu/pkg/logger"
 	"github.com/apache/dubbo-go-pixiu/pkg/model"
-	"github.com/apache/dubbo-go-pixiu/pkg/plugin/sc/discovery"
 )
 
 var (
-	client discovery.Client
+	client Client
 )
 
 func BeforeStart(bootstrap *model.Bootstrap) {
@@ -15,11 +14,14 @@ func BeforeStart(bootstrap *model.Bootstrap) {
 	cloud := bootstrap.SpringCloud
 	if cloud.Eureka.Enable {
 
-		eurekaClient, err := discovery.NewEurekaClient(cloud.Eureka.ConfigFile)
+		eurekaClient, err := NewEurekaClient(cloud.Eureka.ConfigFile)
 
 		if err != nil {
 			logger.Error("init eureka client fail", err)
 		}
+
+		// 定时刷新
+		eurekaClient.StartPeriodicalRefresh()
 
 		client = eurekaClient
 	}

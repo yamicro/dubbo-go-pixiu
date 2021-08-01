@@ -20,7 +20,7 @@ package api
 import (
 	"errors"
 	"fmt"
-	"github.com/apache/dubbo-go-pixiu/pkg/plugin/sc/discovery"
+	"github.com/apache/dubbo-go-pixiu/pkg/plugin/sc"
 	"strings"
 )
 
@@ -45,7 +45,7 @@ func Init() {
 	extension.SetAPIDiscoveryService(constant.LocalMemoryApiDiscoveryService, NewLocalMemoryAPIDiscoveryService())
 
 	// Spring Cloud
-	extension.SetAPIDiscoveryService(constant.SCApiDiscoveryService, discovery.NewDiscoveryServiceAdapter())
+	extension.SetAPIDiscoveryService(constant.SCApiDiscoveryService, sc.NewDiscoveryServiceAdapter())
 }
 
 // LocalMemoryAPIDiscoveryService is the local cached API discovery service

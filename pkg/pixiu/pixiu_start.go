@@ -82,7 +82,7 @@ func (p *PX) beforeStart() {
 	dubbo.SingletonDubboClient().Init()
 
 	config.GetBootstrap()
-
+	// pi
 	plugin.BeforeStart()
 
 	initialize.Run(config.GetAPIConf())
